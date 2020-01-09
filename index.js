@@ -27,4 +27,51 @@ class Item {
   }
 }
 
+class Adversary {
+  constructor(Location) {
+    this.Location = location;
+  }
 
+  move() {
+
+  }
+
+}
+const inventory = {'bread': 0, 'greens': 0, 'cheese': 0, 'meat': 0, 'veggies': 0, 'condiment': 0};
+class Raccoon {
+  constructor(inventory, Location) {
+    this.inventory = inventory;
+    this.Location = location;
+  }
+
+  move() {
+
+  }
+
+  tryAddToInventory(item) {
+    if (!item in inventory) {
+      inventory['name']++;
+    }
+  }
+
+  confiscateItem() {
+
+  }
+
+  tryMakePanini() {
+
+  }
+
+}
+
+
+// Raccoon
+// Methods:
+// constructor(Location) 
+// move() (DON’T TRY THIS YET)
+// tryAddToInventory() (if this item type doesn’t already exist in inventory, add it)
+// confiscateItem() (empty a random inventory slot)
+// tryMakePanini() (return true if every inventory slot is filled, else false)
+// Properties:
+// inventory (object with predefined empty properties for bread, greens, cheese, meat, veggie, condiment)
+// location (hold an instance of the location class)
