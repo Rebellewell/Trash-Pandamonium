@@ -1,77 +1,23 @@
-class Location {
-  constructor(x,y) {
-    this.x = x;
-    this.y = y;
-  }
+import { getRandEl } from './utility';
+import Location from './classes/Location';
+import Item from './classes/Item';
+import Adversary from './classes/Adversary';
+import Raccoon from './classes/Raccoon';
+import Grid from './classes/Grid';
+import TrashCan from './classes/TrashCan';
 
-  equals(loc) {
-    return this.x === loc.x && this.y === loc.y;
-  }
-}
+const bob = new Raccoon(new Location(0,0));
+bob.tryAddToInventory(new Item('wheat', 'bread', 'img'));
+bob.tryAddToInventory(new Item('lettuce', 'greens', 'img'));
+bob.tryAddToInventory(new Item('gouda', 'cheese', 'img'));
+bob.tryAddToInventory(new Item('ham', 'meat', 'img'));
+bob.tryAddToInventory(new Item('lettuce', 'veggies', 'img'));
+bob.tryAddToInventory(new Item('mayo', 'condiment', 'img'));
+console.log(bob.tryMakePanini());
+console.log(bob);
 
-// const loc1 = new Location(0,0);
-// const loc2 = new Location(0,0);
-// const loc3 = new Location(0,1);
-
-// console.log(loc1);
-// console.log(loc1.equals(loc2));
-// console.log(loc2.equals(loc1));
-// console.log(loc3.equals(loc1));
-// console.log(loc2.equals(loc3));
-
-class Item {
-  constructor (name, type, img) {
-    this.name = name;
-    this.type = type;
-    this.img = img;
-  }
-}
-
-class Adversary {
-  constructor(Location) {
-    this.Location = location;
-  }
-
-  move() {
-
-  }
-
-}
-const inventory = {'bread': 0, 'greens': 0, 'cheese': 0, 'meat': 0, 'veggies': 0, 'condiment': 0};
-class Raccoon {
-  constructor(inventory, Location) {
-    this.inventory = inventory;
-    this.Location = location;
-  }
-
-  move() {
-
-  }
-
-  tryAddToInventory(item) {
-    if (!item in inventory) {
-      inventory['name']++;
-    }
-  }
-
-  confiscateItem() {
-
-  }
-
-  tryMakePanini() {
-
-  }
-
-}
-
-
-// Raccoon
-// Methods:
-// constructor(Location) 
-// move() (DON’T TRY THIS YET)
-// tryAddToInventory() (if this item type doesn’t already exist in inventory, add it)
-// confiscateItem() (empty a random inventory slot)
-// tryMakePanini() (return true if every inventory slot is filled, else false)
-// Properties:
-// inventory (object with predefined empty properties for bread, greens, cheese, meat, veggie, condiment)
-// location (hold an instance of the location class)
+const oscarTheGrouch = new TrashCan('any', 'raccoon', 'adversary');
+console.log(oscarTheGrouch.yield());
+console.log(oscarTheGrouch);
+console.log(oscarTheGrouch.freshen());
+console.log(oscarTheGrouch);
