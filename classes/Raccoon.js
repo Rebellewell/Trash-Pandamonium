@@ -1,12 +1,17 @@
 import { getRandEl } from '../utility.js';
-export default class Raccoon {
+import Creature from './Creature';
+
+export default class Raccoon extends Creature {
   constructor(location) {
-    this.inventory = {bread: null, greens: null, cheese: null, meat: null, veggies: null, condiment: null};
-    this.location = location;
-  }
-
-  move() {
-
+    super(location);
+    this.inventory = {
+      bread: null, 
+      greens: null, 
+      cheese: null, 
+      meat: null, 
+      veggies: null, 
+      condiment: null
+    };
   }
 
   tryAddToInventory(item) {

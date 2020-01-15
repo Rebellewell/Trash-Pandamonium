@@ -1,6 +1,8 @@
 import { getRandEl } from "../utility";
+import Item from './item';
 
-const possItemsToYield = ['bread', 'greens', 'cheese', 'meat', 'veggies', 'condiment'];
+
+
 
 export default class TrashCan {
   constructor(location) {
@@ -10,30 +12,36 @@ export default class TrashCan {
   }
 
   yield() {
-    let yieldItem = null;
+    let item = null;
     if(this.fresh) {
-      yieldItem = getRandEl(possItemsToYield);
-      this.turnsTilFresh = 15;
+      item = genItem();
+      this.fresh = false;
+      this.turnsTilFresh = 10;
     }
     return yieldItem;
-    this.fresh = false;
   }
 
   freshen() {
     if(this.turnsTilFresh > 0) {
       this.turnsTilFresh--;
     }
-    if(this.turnsTilFresh === 0) {
+    if(!this.turnsTilFresh) {
       this.fresh = true;
     }
   }
 }
 
-// TrashCan
-// Methods:
-// yield() (returns a random food item if this trash is fresh)
-// freshen() (decrements turnsTilFresh by one down to min 0)
-// Properties:
-// fresh (defaults to true, false after yielding)
-// turnsTilFresh (defaults to 0, 15 after yielding)
-// location
+function genItem() {
+  const types = ['cheese', 'meat', 'bread', 'veggie', 'condiment', 'greens'];
+  const randType = getRandEl(types);
+  const potentialItems = {
+    cheese: ['Brie', 'Bleu', 'Cheddar', 'Mozzarella', 'Pepper Jack'],
+    meat: ['Steak', 'BBQ Pork', 'Grilled Chicken', 'Armadillo'],
+    bread: ['French', 'Wheat', 'Ciabatta', 'White'],
+    veggie: ['Tomato', 'Pickle', 'Cabbage'],
+    condiment: ['Mayo', 'Mustard', 'Fry Sauce'],
+    greens: ['Sprouts', 'Lettuce', 'US Dollar']
+  };
+  const randItem = getRandEl(potentialItems[randType]);
+  return new Item(randItem, randType, 'img');
+}

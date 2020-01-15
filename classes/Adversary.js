@@ -1,9 +1,7 @@
-export default class Adversary {
+import Creature from './Creature';
+
+export default class Adversary extends Creature {
   constructor(location) {
-    this.Location = location;
-  }
-
-  move() {
-
+    super(location);
   }
 }
