@@ -4,7 +4,8 @@
 // import Adversary from './classes/Adversary';
 // import Raccoon from './classes/Raccoon';
 // import TrashCan from './classes/TrashCan';
-import Grid from './classes/Grid';
+import Game from './classes/Game';
+// import Creature from './classes/Creature';
 
 
 // const bob = new Raccoon(new Location(0,0));
@@ -23,18 +24,18 @@ import Grid from './classes/Grid';
 // console.log(oscarTheGrouch.freshen());
 // console.log(oscarTheGrouch);
 
-const grid = new Grid();
-console.log(grid);
-console.table(grid.layout);
+const game = new Game();
+console.log(game);
+console.table(game.grid);
 
 document.addEventListener('keyup', event => {
   if(event.keyCode === 37) {
-    grid.handleMove('left');
+    game.handleMove('left');
   } else if(event.keyCode === 38) {
-    grid.handleMove('up');
+    game.handleMove('up');
   } else if(event.keyCode === 39) {
-    grid.handleMove('right');
+    game.handleMove('right');
   } else if(event.keyCode === 40) {
-    grid.handleMove('down');
+    game.handleMove('down');
   }
 });

@@ -18,7 +18,7 @@ export default class TrashCan {
       this.fresh = false;
       this.turnsTilFresh = 10;
     }
-    return yieldItem;
+    return item;
   }
 
   freshen() {

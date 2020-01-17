@@ -1,0 +1,175 @@
+import { getRandNum, getRandEl } from '../utility';
+import Location from './Location';
+import Raccoon from './Raccoon';
+import Adversary from './Adversary';
+import TrashCan from './TrashCan';
+
+export default class Game {
+  constructor(domID) {
+    this.domID = domID;
+    this.grid = Array(7)
+    .fill()
+    .map(el => Array(7).fill());
+
+    // get random exclusive spots for raccoon, adversary, and 5 trash cans, panini in middle
+    const locations = [];
+    for(let i = 0; i < 7; i++) {
+      locations.push(genNewLocation(locations)); 
+    }
+
+    this.raccoon = new Raccoon(locations[0]);
+    this.grid[locations[0].y][locations[0].x] = this.raccoon;
+
+    this.adversary = new Adversary(locations[1]);
+    this.grid[locations[1].y][locations[1].x] = this.adversary;
+
+    this.trashCans = [];
+    locations.slice(2).forEach(loc => {
+      const newCan = new TrashCan(loc);
+      this.trashCans.push(newCan);
+      this.grid[loc.y][loc.x] = newCan;
+    });
+  }
+
+  canMoveHere(loc) {
+    return (
+      loc.x >= 0 && 
+      loc.y >= 0 &&
+      loc.x <= 6 &&
+      loc.y <= 6 &&
+      !this.grid[loc.y][loc.x]
+    );
+  }
+
+  getPossibleMoves(loc) {
+    const { x: oldX, y: oldY } = loc;
+    const possibleMoves = [];
+    if (this.canMoveHere(new Location(oldX - 1, oldY - 1))) {
+      possibleMoves.push(new Location(oldX - 1, oldY - 1));
+    }
+    if (this.canMoveHere(new Location(oldX - 1, oldY))) {
+      possibleMoves.push(new Location(oldX - 1, oldY));
+    }
+    if (this.canMoveHere(new Location(oldX - 1, oldY + 1))) {
+      possibleMoves.push(new Location(oldX - 1, oldY + 1));
+    }
+    if (this.canMoveHere(new Location(oldX, oldY - 1))) {
+      possibleMoves.push(new Location(oldX, oldY - 1));
+    }
+    if (this.canMoveHere(new Location(oldX, oldY + 1))) {
+      possibleMoves.push(new Location(oldX, oldY + 1));
+    }
+    if (this.canMoveHere(new Location(oldX + 1, oldY - 1))) {
+      possibleMoves.push(new Location(oldX + 1, oldY - 1));
+    }
+    if (this.canMoveHere(new Location(oldX + 1, oldY))) {
+      possibleMoves.push(new Location(oldX + 1, oldY));
+    }
+    if (this.canMoveHere(new Location(oldX + 1, oldY + 1))) {
+      possibleMoves.push(new Location(oldX + 1, oldY + 1));
+    }
+    return possibleMoves;
+  }
+
+  handleMove(dir) {
+    console.log('dir:', dir);
+    // console.log(this.raccoon.getNearby(TrashCan, this.grid));
+    // console.log(this.raccoon.getNearby(Adversary, this.grid));
+  
+    let { x: newX ,y: newY } = this.raccoon.location;
+    switch(dir) {
+      case 'left':
+        newX--;
+        break;
+      case 'right':
+        newX++;
+        break;
+      case 'up':
+        newY--;
+        break;
+      case 'down':
+        newY++;
+        break;
+    }
+    const newRaccoonLoc = new Location(newX, newY);
+    const willMove = this.canMoveHere(newRaccoonLoc);
+
+    if(willMove) {
+      // remove raccoon from old spot in grid Game
+      const { x: oldX, y: oldY } = this.raccoon.location;
+      this.grid[oldY][oldX] = undefined;
+      // update the carroon's location on his location prop
+      this.raccoon.location = newRaccoonLoc;
+      // update the raccoon's location on Game's 
+      this.grid[newY][newX] = this.raccoon;
+      // check if he's next ot trash can
+      const nearbyTrash = this.raccoon.getNearby(TrashCan, this.grid);
+      const freshTrash = nearbyTrash.filter(trash => trash.fresh);
+      // if so try to yield from the trash can
+      if(freshTrash.length) {
+        const item = freshTrash[0].yield();
+        this.raccoon.tryAddToInventory(item);
+      }
+    }
+    
+    this.trashCans.forEach(trash => trash.freshen());
+    console.table(this.grid);
+    console.log(this.raccoon);
+    
+    for(let i = 0; i < 3; i++) {
+      const possibleMoves = this.getPossibleMoves(this.adversary.location);
+      if(possibleMoves.length) {
+        const randMove = getRandEl(possibleMoves);
+        // move adversary to random possible move
+        const { x: oldAdX, y: oldAdY } = this.adversary.location;
+        this.grid[oldAdY][oldAdX] = undefined;
+        this.adversary.location = randMove;
+        this.grid[randMove.y][randMove.x] = this.adversary;
+      }
+  
+      // check to see if adversary is within one of raccoon
+      const nearbyRaccoon = this.adversary.getNearby(Raccoon, this.grid);
+      if(nearbyRaccoon.length) {
+        // if so, confiscate from raccoon and end adversary's turn
+        this.raccoon.confiscateItem();
+        break;
+      }
+    }
+    this.populateGrid();
+    this.populateInfo();
+  }
+
+  populateGrid() {
+    const game = document.getElementById(this.domID);
+    const grid = game.querySelector('.grid');
+    grid.innerHTML = '';
+    for(let i = 0; i < 7; i++) {
+      const row = document.createElement('div');
+      for(let j = 0; j < 7; j++) {
+        const cell = document.createElement('div');
+        if(this.grid[i][j]) {
+          cell.innerText = this.grid[i][j].constructor.name;
+        }
+        row.appendChild(cell);
+
+      }
+      grid.appendChild(row);
+    }
+  }
+
+  populateInfo() {}
+}
+
+function genNewLocation(locations) {
+  let unique = true;
+  let newLoc;
+  do {
+    newLoc = new Location(getRandNum(0,6), getRandNum(0,6));
+    const matches = locations.filter(loc => loc.equals(newLoc));
+    unique = !matches.length;
+  } while(!unique);
+
+  return newLoc;
+}
+
+

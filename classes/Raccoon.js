@@ -1,4 +1,4 @@
-import { getRandEl } from '../utility.js';
+import { getRandEl } from '../utility';
 import Creature from './Creature';
 
 export default class Raccoon extends Creature {

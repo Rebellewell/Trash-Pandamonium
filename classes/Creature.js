@@ -19,6 +19,7 @@ export default class Creature {
           matches.push(grid[y][x]);
         }
       }
-    }  
+    } 
+    return matches; 
   }
 }

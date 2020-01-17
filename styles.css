@@ -1,0 +1,15 @@
+.grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.grid > div {
+  display: flex;
+  width: 600px;
+  height: calc(600px / 7):
+}
+
+.grid > div > div {
+  width: calc(600px / 7);
+  height: calc(600px / 7);
+}
