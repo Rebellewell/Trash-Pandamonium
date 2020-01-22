@@ -1,9 +1,6 @@
 import { getRandEl } from "../utility";
 import Item from './item';
 
-
-
-
 export default class TrashCan {
   constructor(location) {
     this.fresh = true;

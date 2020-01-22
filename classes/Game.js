@@ -29,6 +29,9 @@ export default class Game {
       this.trashCans.push(newCan);
       this.grid[loc.y][loc.x] = newCan;
     });
+
+    this.populateGrid();
+    this.populateInfo();
   }
 
   canMoveHere(loc) {
@@ -115,7 +118,9 @@ export default class Game {
     this.trashCans.forEach(trash => trash.freshen());
     console.table(this.grid);
     console.log(this.raccoon);
-    
+
+
+    // adversary has to move
     for(let i = 0; i < 3; i++) {
       const possibleMoves = this.getPossibleMoves(this.adversary.location);
       if(possibleMoves.length) {
@@ -157,7 +162,29 @@ export default class Game {
     }
   }
 
-  populateInfo() {}
+  populateInfo() {
+    const game = document.getElementById(this.domID);
+    const inventory = game.querySelector('.inventory');
+    inventory.innerHTML = '';
+
+    for(let type in this.raccoon.inventory) {
+      const itemSlot = document.createElement('div');
+      itemSlot.classList.add('item');
+
+      const typeName = document.createElement('label');
+      typeName.innerText = type;
+      const invLvl = document.createElement('span');
+      if(this.raccoon.inventory[type]) {
+        invLvl.innerText = this.raccoon.inventory[type].name;
+      } else {
+        invLvl.innerText = 'EMPTY';
+      }
+
+      itemSlot.appendChild(typeName);
+      itemSlot.appendChild(invLvl);
+      inventory.appendChild(itemSlot);
+    }
+  }
 }
 
 function genNewLocation(locations) {
