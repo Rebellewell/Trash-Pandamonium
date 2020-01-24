@@ -29,13 +29,13 @@ export default class TrashCan {
 }
 
 function genItem() {
-  const types = ['cheese', 'meat', 'bread', 'veggie', 'condiment', 'greens'];
+  const types = ['cheese', 'meat', 'bread', 'veggies', 'condiment', 'greens'];
   const randType = getRandEl(types);
   const potentialItems = {
     cheese: ['Brie', 'Bleu', 'Cheddar', 'Mozzarella', 'Pepper Jack'],
     meat: ['Steak', 'BBQ Pork', 'Grilled Chicken', 'Armadillo'],
     bread: ['French', 'Wheat', 'Ciabatta', 'White'],
-    veggie: ['Tomato', 'Pickle', 'Cabbage'],
+    veggies: ['Tomato', 'Pickle', 'Cabbage'],
     condiment: ['Mayo', 'Mustard', 'Fry Sauce'],
     greens: ['Sprouts', 'Lettuce', 'US Dollar']
   };

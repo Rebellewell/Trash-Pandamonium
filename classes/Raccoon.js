@@ -35,4 +35,10 @@ export default class Raccoon extends Creature {
     }
     return true;
   }
+
+  hasAllIngredients() {
+    return Object
+      .values(this.inventory)
+      .filter(item => !!item).length === 6;
+  }
 }

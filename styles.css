@@ -1,6 +1,12 @@
 h1 {
   text-align: center;
   text-transform: uppercase;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  color: darkslategrey;
+}
+
+h3 {
+  text-align: center;
 }
 
 #game {
@@ -12,6 +18,7 @@ h1 {
 .grid {
   display: flex;
   flex-direction: column;
+  border: 5px double darkolivegreen;
 }
 
 .grid > div {
@@ -19,6 +26,7 @@ h1 {
   width: 600px;
   height: calc(600px / 7);
   border-top: 1px solid #ccc;
+  background-color: rgb(210, 241, 215);
 }
 
 .grid > div:last-child {
@@ -41,12 +49,23 @@ h1 {
 .inventory {
   display: flex;
   flex-direction: column;
-  align-items: top;
   text-transform: capitalize;
+  font-size: 18px;
+  color: darkred;
+  border: solid rgb(41, 38, 61);
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .item {
   display: flex;
   text-transform: capitalize;
   justify-content: space-between;
+}
+
+.turns {
+  display: flex;
+  justify-content: center;
+  font-size: 56px;
+  border: solid yellowgreen;
 }

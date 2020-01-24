@@ -10,6 +10,8 @@ export default class Game {
     this.grid = Array(7)
     .fill()
     .map(el => Array(7).fill());
+    this.turns = 0;
+    this.status = 'playing';
 
     // get random exclusive spots for raccoon, adversary, and 5 trash cans, panini in middle
     const locations = [];
@@ -76,10 +78,11 @@ export default class Game {
 
   handleMove(dir) {
     console.log('dir:', dir);
-    // console.log(this.raccoon.getNearby(TrashCan, this.grid));
-    // console.log(this.raccoon.getNearby(Adversary, this.grid));
+    if(this.status !== 'playing') {
+      return;
+    }
   
-    let { x: newX ,y: newY } = this.raccoon.location;
+    let { x: newX, y: newY } = this.raccoon.location;
     switch(dir) {
       case 'left':
         newX--;
@@ -119,6 +122,18 @@ export default class Game {
     console.table(this.grid);
     console.log(this.raccoon);
 
+    
+    this.turns++;
+
+    if(this.raccoon.hasAllIngredients()) {
+      this.status = 'won';
+      alert('You scavenged all your ingredients! Enjoy your panini!!');
+    } 
+
+    if(this.turns === 100 && this.status === 'playing') {
+      this.status = 'lost';
+      alert('Game Over! Your adversary has triumphed.');
+    }
 
     // adversary has to move
     for(let i = 0; i < 3; i++) {
@@ -163,6 +178,9 @@ export default class Game {
   }
 
   populateInfo() {
+    const turnsRemaining = document.querySelector('.turns');
+    turnsRemaining.innerText = 100 - this.turns;
+
     const game = document.getElementById(this.domID);
     const inventory = game.querySelector('.inventory');
     inventory.innerHTML = '';
