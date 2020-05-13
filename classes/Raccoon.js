@@ -5,13 +5,15 @@ export default class Raccoon extends Creature {
   constructor(location) {
     super(location);
     this.inventory = {
-      bread: null, 
-      greens: null, 
-      cheese: null, 
-      meat: null, 
-      veggies: null, 
-      condiment: null
+      bread: null,
+      greens: null,
+      cheese: null,
+      meat: null,
+      veggies: null,
+      condiment: null,
     };
+    this.img =
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSh4J6a-8_1p1JWMc8Zxwe8UM_3WsLIB2tnll9kkp1pMRp3ULa8&usqp=CAU';
   }
 
   tryAddToInventory(item) {
@@ -23,13 +25,15 @@ export default class Raccoon extends Creature {
   confiscateItem() {
     const types = Object.keys(this.inventory);
     const typeToRemove = getRandEl(types);
+    const item = this.inventory[typeToRemove];
     this.inventory[typeToRemove] = null;
+    return item;
   }
 
   tryMakePanini() {
     const itemPresent = Object.values(this.inventory);
-    for(let i = 0; i < itemPresent.length; i++) {
-      if(itemPresent[i] === null) {
+    for (let i = 0; i < itemPresent.length; i++) {
+      if (itemPresent[i] === null) {
         return false;
       }
     }
@@ -37,8 +41,6 @@ export default class Raccoon extends Creature {
   }
 
   hasAllIngredients() {
-    return Object
-      .values(this.inventory)
-      .filter(item => !!item).length === 6;
+    return Object.values(this.inventory).filter((item) => !!item).length === 6;
   }
 }
